@@ -1,0 +1,10 @@
+{
+"project_id": "infra-000000",
+"source_image_family": "ubuntu-1604-lts",
+"machine_type": "f1-micro",
+"disk_name": "reddit-app-disk",
+"disk_size111": "20",
+"disk_type": "pd-standard",
+"image_description": "test mass variables image",
+"network": "test-network"
+}
