@@ -23,3 +23,8 @@ variable "private_key_path" {
 variable disk_image {
   description = "Disk image"
 }
+
+variable "app_count" {
+  description = "instances quantity for LB"
+  default     = "1"
+}
