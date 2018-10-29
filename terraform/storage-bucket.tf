@@ -7,7 +7,7 @@ provider "google" {
 module "storage-bucket" {
   source  = "SweetOps/storage-bucket/google"
   version = "0.1.1"
-  name    = ["storage-bucket-kirill-garbar-1", "storage-bucket-kirill-garbar-2"]
+  name    = ["storage-bucket-${var.project}-stage", "storage-bucket-${var.project}-prod"]
 }
 
 output storage-bucket_url {

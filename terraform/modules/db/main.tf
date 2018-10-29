@@ -18,7 +18,38 @@ resource "google_compute_instance" "db" {
   metadata {
     ssh-keys = "appuser:${file(var.public_key_path)}"
   }
+
+    connection {
+    type        = "ssh"
+    user        = "appuser"
+    agent       = false
+    private_key = "${file("${var.private_key_path}")}"
+  }
+
+
 }
+
+resource "null_resource" "db_provisioner" {
+
+  count = "${var.provisioner_condition == 1 ? 1 : 0}"
+
+  connection {
+    type        = "ssh"
+    user        = "appuser"
+    agent       = false
+    private_key = "${file("${var.private_key_path}")}"
+    host = "${google_compute_instance.db.network_interface.0.access_config.0.assigned_nat_ip}"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      # "sudo -- sh -c 'sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf && systemctl restart mongod'"
+      "sudo sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/' /etc/mongod.conf",
+      "sudo systemctl restart mongod"
+    ]
+  }
+}
+
 
 resource "google_compute_firewall" "firewall_mongo" {
   name    = "allow-mongo-default"
@@ -33,5 +64,5 @@ resource "google_compute_firewall" "firewall_mongo" {
   target_tags = ["reddit-db"]
 
   # порт будет доступен только для инстансов с тегом ...
-  source_tags = ["reddit-app"]
+  # source_tags = ["reddit-app"]
 }

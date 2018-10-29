@@ -4,3 +4,4 @@ private_key_path = "~/.ssh/appuser"
 disk_image = "reddit-base"
 region = "europe-west1"
 app_count = "1"
+provisioner_condition = 1
