@@ -4,3 +4,13 @@ variables.json
 *.tfstate.backup
 *.tfvars
 .terraform/
+id_rsa
+appuser
+webprogrammer
+*.retry
+.vscode/
+ansible/dyn_inv/
+gce.py
+gce.ini
+infra*.json
+tf.log
