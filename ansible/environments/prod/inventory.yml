@@ -1,9 +1,0 @@
-app:
-  hosts:
-    appserver:
-      ansible_host: 8.8.8.8
-
-db:
-  hosts:
-    dbserver:
-      ansible_host: 9.9.9.9
