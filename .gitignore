@@ -14,3 +14,5 @@ gce.py
 gce.ini
 infra*.json
 tf.log
+jdauphant.nginx
+vault.key
