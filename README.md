@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/Kirill-Garbar_infra.svg?branch=master)](https://travis-ci.com/Otus-DevOps-2018-09/Kirill-Garbar_infra)
+
 # HW-3
 ## В процессе сделано:
  - Созданы две ВМ. Одна с внутренним. Одна с внешним и внутренним IP - пограничный сервер.

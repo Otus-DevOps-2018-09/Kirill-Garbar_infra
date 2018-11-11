@@ -1,9 +1,50 @@
 dist: trusty
 sudo: required
 language: bash
+env:
+  - PACKER_V=1.3.1 TF_V=0.11.10 TFLINT_V=0.7.2 ANS_V=2.7.1 ANSLINT_V=3.5.1
 before_install:
-- curl https://raw.githubusercontent.com/express42/otus-homeworks/2018-09/run.sh |
-  bash
+- curl https://raw.githubusercontent.com/express42/otus-homeworks/2018-09/run.sh | bash
+- sudo pip install --upgrade pip
+install:
+  # packer
+  - wget https://releases.hashicorp.com/packer/${PACKER_V}/packer_${PACKER_V}_linux_amd64.zip -O packer.zip
+  - sudo unzip packer.zip -d /usr/bin
+  # #tf
+  - wget https://releases.hashicorp.com/terraform/${TF_V}/terraform_${TF_V}_linux_amd64.zip -O tf.zip
+  - sudo unzip tf.zip -d /usr/bin
+  # #tf-lint
+  - wget https://github.com/wata727/tflint/releases/download/v0.7.2/tflint_linux_amd64.zip -O tflint.zip
+  - sudo unzip tflint.zip -d /usr/bin
+  # #ans&ans-lint
+  - sudo pip install ansible==${ANS_V} ansible-lint==${ANSLINT_V}
+  - echo $PATH
+before_script:
+  - touch ~/.ssh/appuser ~/.ssh/appuser.pub
+  - mv packer/variables.json.example packer/variables.json
+  - mv terraform/terraform.tfvars.example terraform/terraform.tfvars
+  - mv terraform/stage/terraform.tfvars.example terraform/stage/terraform.tfvars
+  - mv terraform/prod/terraform.tfvars.example terraform/prod/terraform.tfvars
+script:
+  # packer
+  # Хотел здесь сделать двумя массивами и циклом, но не стал, потому что не смог объявить в блоке env массив.
+  # Трэвис из блока env автоматически конвертит в export, а массивы на export нельзя.
+  # Плюс к тому у нас два шаблона валидируются из директории packer, два шаблона из корневой.
+  - cd ${TRAVIS_BUILD_DIR}/packer
+  - packer validate -var-file=variables.json ubuntu16.json
+  - packer validate -var-file=variables.json immutable.json
+  - cd ${TRAVIS_BUILD_DIR}
+  - packer validate packer/app.json
+  - packer validate packer/db.json
+  # tf && tflint
+  - cd ${TRAVIS_BUILD_DIR}/terraform
+  - cd ${TRAVIS_BUILD_DIR}/terraform/stage
+  - terraform init -backend=false && terraform validate && tflint
+  - cd ${TRAVIS_BUILD_DIR}/terraform/prod
+  - terraform init -backend=false && terraform validate && tflint
+  # ansible-lint
+  - cd ${TRAVIS_BUILD_DIR}/ansible
+  - ansible-lint playbooks/*.yml  --exclude=roles/jdauphant.nginx
 notifications:
   slack:
     rooms:
