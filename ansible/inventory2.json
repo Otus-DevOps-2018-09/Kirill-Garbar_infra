@@ -1,0 +1,23 @@
+{
+    "app": {
+        "children": [
+            "appserver",
+            "dbserver"
+        ]
+    },
+    "db": {
+        "children": [
+            "dbserver"
+        ]
+    },
+    "appserver": {
+        "hosts": [
+            "8.8.8.8"
+        ]
+    },
+    "dbserver": {
+        "hosts": [
+            "9.9.9.9"
+        ]
+    }
+}

@@ -1,0 +1,4 @@
+[app]
+appserver ansible_host=8.8.8.8
+[db]
+dbserver ansible_host=9.9.9.9
