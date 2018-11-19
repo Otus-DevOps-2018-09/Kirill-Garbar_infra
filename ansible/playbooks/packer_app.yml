@@ -3,11 +3,6 @@
   hosts: all
   become: true
   tasks:
-    - name: Install ruby
-      apt:
-        name: "{{ packages }}"
-      vars:
-        packages:
-          - ruby-full
-          - ruby-bundler
-          - build-essential
+    - import_role:
+        name: app
+        tasks_from: ruby.yml
