@@ -13,6 +13,7 @@
     - name: install MongoDB
       apt:
         name: mongodb-org
-    - systemd:
+    - name: enable MongoDB
+      systemd:
         name: mongod
         enabled: yes
