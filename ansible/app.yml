@@ -1,0 +1,25 @@
+---
+- name: Configure App
+  hosts: reddit-app
+  become: true
+  vars:
+    db_host: "{{ hostvars['reddit-db']['gce_private_ip'] }}"
+  tasks:
+    - name: Add unit file for Puma
+      copy:
+        src: files/puma.service
+        dest: /etc/systemd/system/puma.service
+
+    - name: debug internal ip
+      debug:
+        msg: "{{ hostvars['reddit-db']['gce_private_ip'] }}"
+
+    - name: Add config for DB connection
+      template:
+        src: templates/db_config.j2
+        dest: /home/appuser/db_config
+        owner: appuser
+        group: appuser
+
+    - name: enable puma
+      systemd: name=puma enabled=yes

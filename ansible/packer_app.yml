@@ -1,0 +1,13 @@
+---
+- name: Install ruby in image
+  hosts: all
+  become: true
+  tasks:
+    - name: Install ruby
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - ruby-full
+          - ruby-bundler
+          - build-essential
