@@ -18,5 +18,5 @@ def test_config_file(host):
     assert config_file.is_file
 
 def test_port_listening(host):
-    mongo_listening = host.socket("tcp://0.0.0.0:22")
+    mongo = host.socket("tcp://0.0.0.0:22")
     assert mongo.is_listening

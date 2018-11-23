@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Kirill-Garbar/db.svg?branch=master)](https://travis-ci.com/Kirill-Garbar/db)
+
 Role Name
 =========
 
