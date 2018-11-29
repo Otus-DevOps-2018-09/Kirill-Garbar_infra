@@ -3,6 +3,12 @@
   hosts: reddit-app
   tags: reddit-app
   become: true
-  roles:
-   - app
-   - jdauphant.nginx
+  tasks:
+    - import_role:
+        name: app
+    - name: test vars
+      debug:
+        msg: "{{nginx_sites}}"
+    - import_role:
+        name: jdauphant.nginx
+        # tasks_from: remove-defaults.yml
